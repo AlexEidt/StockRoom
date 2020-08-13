@@ -1,9 +1,11 @@
 package com.thecloudsite.stockroom
 
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.webkit.CookieManager
+import android.webkit.WebSettings
 import androidx.annotation.RawRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -36,6 +38,30 @@ class ListActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_list)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    val settings = webview.settings
+    settings.setJavaScriptEnabled(true);
+    settings.setPluginState(WebSettings.PluginState.ON);
+    settings.setAllowFileAccess(true);
+    settings.setAllowContentAccess(true);
+    settings.setAllowFileAccessFromFileURLs(true);
+    settings.setAllowUniversalAccessFromFileURLs(true);
+
+    settings.setSupportZoom(true);
+    settings.setBlockNetworkImage(false);
+    settings.setLoadsImagesAutomatically(true);
+    settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+    settings.setDomStorageEnabled(true);
+    settings.setDatabaseEnabled(true);
+    settings.setAppCacheEnabled(true);
+
+    settings.setUserAgentString(
+        "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 5 Build/LMY48B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/43.0.2357.65 Mobile Safari/537.36"
+    )
+    settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW)
+    val cookieManager: CookieManager = CookieManager.getInstance()
+    cookieManager.setAcceptCookie(true)
+    cookieManager.setAcceptThirdPartyCookies(webview, true)
 
     val sharedPreferences =
       PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
